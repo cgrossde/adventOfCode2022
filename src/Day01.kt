@@ -1,6 +1,6 @@
 import java.io.File
 
-fun main(args: Array<String>) {
+fun main() {
     val elfCalories = mutableMapOf<Int, List<Int>>()
     var currentElf = 1
 
@@ -13,13 +13,14 @@ fun main(args: Array<String>) {
         val calories: List<Int> = elfCalories[currentElf] ?: listOf()
         elfCalories[currentElf] = calories.plus(line.toInt())
     }
+    val elfSumCalories = elfCalories.mapValues { it.value.sum() }
 
     // Part 1
-    val max = elfCalories.mapValues { it.value.sum() }.maxBy { it.value }
+    val max = elfSumCalories.maxBy { it.value }
 
     // Part 2
-    val top3 = elfCalories.mapValues { it.value.sum() }.map { Pair(it.key, it.value) }.sortedByDescending {  it.second }.subList(0, 3)
-    val sumTop3 = elfCalories.mapValues { it.value.sum() }.values.sortedDescending().subList(0,3).sum()
+    val top3 = elfSumCalories.map { Pair(it.key, it.value) }.sortedByDescending {  it.second }.subList(0, 3)
+    val sumTop3 = elfSumCalories.values.sortedDescending().subList(0, 3).sum()
 
     println("Max calorie elf: $max")
     println("Top 3: $top3")
