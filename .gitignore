@@ -9,6 +9,8 @@ build/
 .idea/workspace.xml
 .idea/jarRepositories.xml
 .idea/compiler.xml
+.idea/sonarlint
+.idea/GitLink.xml
 .idea/libraries/
 *.iws
 *.iml
