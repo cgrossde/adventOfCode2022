@@ -2,7 +2,7 @@ import java.io.File
 import java.lang.IllegalArgumentException
 import kotlin.math.abs
 
-data class Point(val x: Int, val y: Int) {
+data class Point(var x: Int, var y: Int) {
     fun moveByOne(direction: Direction): Point {
         return Point(this.x + direction.x, this.y + direction.y)
     }
