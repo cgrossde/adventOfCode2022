@@ -2,22 +2,22 @@ import java.io.File
 import java.lang.IllegalArgumentException
 import kotlin.math.abs
 
-data class Point(var x: Int, var y: Int) {
-    fun moveByOne(direction: Direction): Point {
-        return Point(this.x + direction.x, this.y + direction.y)
+data class PointD9(var x: Int, var y: Int) {
+    fun moveByOne(direction: Direction): PointD9 {
+        return PointD9(this.x + direction.x, this.y + direction.y)
     }
 
-    fun directionTo(target: Point): Direction {
+    fun directionTo(target: PointD9): Direction {
         return Direction.fromDelta(target.x - this.x,target.y- this.y)
     }
 
-    fun adjacent(target: Point): Boolean {
+    fun adjacent(target: PointD9): Boolean {
         val deltaX = abs(this.x - target.x)
         val deltaY = abs(this.y - target.y)
         return (deltaX == 1 && deltaY <= 1) || (deltaY == 1 && deltaX <= 1)
     }
 
-    fun dragByOneTo(target: Point): Point {
+    fun dragByOneTo(target: PointD9): PointD9 {
         if (this == target)
             return this
         if (this.adjacent(target))
@@ -54,8 +54,8 @@ enum class Direction(val x: Int, val y: Int) {
     }
 }
 
-data class Rope(val knots: MutableList<Point>, val visitedByTail: MutableSet<Point> = mutableSetOf()) {
-    constructor(knots: Int, start: Point) : this(MutableList<Point>(knots) {start}, mutableSetOf(start))
+data class Rope(val knots: MutableList<PointD9>, val visitedByTail: MutableSet<PointD9> = mutableSetOf()) {
+    constructor(knots: Int, start: PointD9) : this(MutableList<PointD9>(knots) {start}, mutableSetOf(start))
 
     fun move(direction: Direction) {
         knots[0] = knots[0].moveByOne(direction)
@@ -67,8 +67,8 @@ data class Rope(val knots: MutableList<Point>, val visitedByTail: MutableSet<Poi
 }
 
 fun main() {
-    val rope2Knots = Rope(2, Point(0, 0))
-    val rope10Knots = Rope(10, Point(0, 0))
+    val rope2Knots = Rope(2, PointD9(0, 0))
+    val rope10Knots = Rope(10, PointD9(0, 0))
     val instructions = File("src", "Day09.txt").readLines()
         .flatMap { line -> Direction.fromString(line) }
     instructions
@@ -83,7 +83,7 @@ fun main() {
 
 private fun debug(
     instructions: List<Direction>,
-    visitedByTail: MutableSet<Point>
+    visitedByTail: MutableSet<PointD9>
 ) {
     println(instructions)
     println(visitedByTail)
@@ -91,7 +91,7 @@ private fun debug(
     val topY = visitedByTail.maxOf { it.y }
     for (y in topY downTo 0) {
         for (x in 0..topX) {
-            val m = if (visitedByTail.contains(Point(x, y))) "#" else "."
+            val m = if (visitedByTail.contains(PointD9(x, y))) "#" else "."
             print(m)
         }
         print("\n")
